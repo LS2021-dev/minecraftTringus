@@ -1,0 +1,11 @@
+name: "minecraftTringus"
+version: '1.0-SNAPSHOT'
+main: de.ferargent.minecraftTringus.Main
+api-version: '1.20'
+commands:
+  spawn:
+    description: Teleports you to spawn
+    permission: op
+  sealspawn:
+    description: Seals the spawn
+    permission: op

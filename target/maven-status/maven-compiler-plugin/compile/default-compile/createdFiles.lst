@@ -1,0 +1,8 @@
+de\ferargent\minecraftTringus\commandTabComplete.class
+de\ferargent\minecraftTringus\listeners\SpawnProtectionListener.class
+de\ferargent\minecraftTringus\Main.class
+de\ferargent\minecraftTringus\listeners\ElytraListener.class
+de\ferargent\minecraftTringus\listeners\ElytraListener$1Runnable.class
+de\ferargent\minecraftTringus\commands\sealSpawn.class
+de\ferargent\minecraftTringus\commands\spawn.class
+de\ferargent\minecraftTringus\listeners\SealSpawnListener.class
