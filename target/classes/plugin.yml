@@ -9,3 +9,6 @@ commands:
   sealspawn:
     description: Seals the spawn
     permission: op
+  setwarp:
+    description: Sets the warp
+    permission: op

@@ -36,11 +36,13 @@ public class SpawnProtectionListener extends BukkitRunnable implements Listener 
     public void run() {
         if (spawnProtectionEnabled) {
             world.getPlayers().forEach(player -> {
-                if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || player.isOp()) return;
+                if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
                 if (player.getLocation().distance(world.getSpawnLocation()) <= spawnRadius) {
                     player.setGameMode(GameMode.ADVENTURE);
-                } else {
+                    player.addScoreboardTag("spawn");
+                } else if (player.getScoreboardTags().contains("spawn") && !player.getScoreboardTags().contains("warp")) {
                     player.setGameMode(GameMode.SURVIVAL);
+                    player.removeScoreboardTag("spawn");
                 }
             });
         }

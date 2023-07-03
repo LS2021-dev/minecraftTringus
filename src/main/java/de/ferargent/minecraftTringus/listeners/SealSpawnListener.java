@@ -41,7 +41,7 @@ public class SealSpawnListener extends BukkitRunnable implements Listener {
         PersistentDataContainer data = world.getPersistentDataContainer();
         if (data.get(new NamespacedKey(Main.getPlugin(), "sealSpawn"), PersistentDataType.BOOLEAN)) {
             world.getPlayers().forEach(player -> {
-                if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || player.isOp())
+                if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR)
                     return;
                 if (player.getLocation().distance(world.getSpawnLocation()) > spawnRadius) {
                     player.teleport(world.getSpawnLocation());
