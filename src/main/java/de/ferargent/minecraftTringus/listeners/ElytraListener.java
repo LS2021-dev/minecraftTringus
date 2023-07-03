@@ -81,13 +81,9 @@ public class ElytraListener extends BukkitRunnable implements Listener {
                     player.getInventory().setChestplate(customElytra());
                 } else {
                     player.getInventory().setChestplate(customElytra());
-                    class Runnable extends BukkitRunnable {
-                        @Override
-                        public void run() {
-                            Main.getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), "advancement revoke " + player.getName() + " through minecraft:end/elytra");
-                        }
-                    }
-                    new Runnable().runTaskLater(Main.getPlugin(), 3000);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.minecraft("end/elytra"))).revokeCriteria("elytra");
+                    }, 5);
                 }
                 hasElytra.add(player);
             }
