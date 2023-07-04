@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -64,8 +65,6 @@ public class ElytraListener extends BukkitRunnable implements Listener {
     @Override
     public void run() {
         world.getPlayers().forEach(player -> {
-            if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE && player.getInventory().getChestplate() != null)
-                return;
             if ((player.getInventory().contains(customElytra()) || player.getInventory().contains(customBoost())) && !hasElytra.contains(player)) {
                 hasElytra.add(player);
             }
@@ -73,14 +72,7 @@ public class ElytraListener extends BukkitRunnable implements Listener {
                 player.getInventory().setItem(8, customBoost());
             }
             if (isInSpawnRadius(player) && !hasElytra.contains(player) && player.getInventory().getChestplate() == null) {
-                if (player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.fromString("end/elytra"))).isDone()) {
-                    player.getInventory().setChestplate(customElytra());
-                } else {
-                    player.getInventory().setChestplate(customElytra());
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                        player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.minecraft("end/elytra"))).revokeCriteria("elytra");
-                    }, 5);
-                }
+                player.getInventory().setChestplate(customElytra());
                 hasElytra.add(player);
             }
             if (hasElytra.contains(player) && player.isOnGround() && !isInSpawnRadius(player)) {
@@ -102,11 +94,17 @@ public class ElytraListener extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
+    private void onAchievement(PlayerAdvancementDoneEvent event) {
+        Player player = event.getPlayer();
+        if (event.getAdvancement().getKey().toString().equals("minecraft:end/elytra") && player.getInventory().getChestplate().equals(customElytra())) {
+            player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.minecraft("end/elytra"))).revokeCriteria("elytra");
+        }
+    }
+
+    @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (event.getEntityType() == EntityType.PLAYER
-                && (event.getCause() == EntityDamageEvent.DamageCause.FALL
-                || event.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL)
-                && hasElytra.contains(event.getEntity())) event.setCancelled(true);
+        if (event.getEntityType() == EntityType.PLAYER && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL) && hasElytra.contains(event.getEntity()))
+            event.setCancelled(true);
     }
 
     @EventHandler

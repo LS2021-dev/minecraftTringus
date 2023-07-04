@@ -14,9 +14,15 @@ public class spawn implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         Player player = (Player) commandSender;
         Location location = player.getWorld().getSpawnLocation();
-        location.setX(location.getX() - 0.5);
+        if (location.getX() < 0)
+            location.setX(location.getX() - 0.5);
+        else
+            location.setX(location.getX() + 0.5);
         location.setY(location.getY() + 0.5);
-        location.setZ(location.getZ() + 0.5);
+        if (location.getZ() < 0)
+            location.setZ(location.getZ() + 0.5);
+        else
+            location.setZ(location.getZ() - 0.5);
         location.setDirection(player.getLocation().getDirection());
         player.teleport(location);
         player.getWorld().playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
