@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -102,8 +103,14 @@ public class ElytraListener extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent event) {
+    private void onDamage(EntityDamageEvent event) {
         if (event.getEntityType() == EntityType.PLAYER && (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL) && hasElytra.contains(event.getEntity()))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onHunger(FoodLevelChangeEvent event) {
+        if (event.getEntityType() == EntityType.PLAYER && hasElytra.contains(event.getEntity()))
             event.setCancelled(true);
     }
 
