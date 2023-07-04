@@ -1,8 +1,8 @@
 package de.ferargent.minecraftTringus.commands;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +17,7 @@ public class spawn implements CommandExecutor {
         location.setY(location.getY() + 0.5);
         location.setDirection(player.getLocation().getDirection());
         player.teleport(location);
+        player.getWorld().playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, location, 60, 0.2, 0.5, 0.2, 0.1, null, true);
         player.sendMessage("§bTeleported to spawn!");
         return false;

@@ -19,7 +19,12 @@ public class commandTabComplete implements TabCompleter {
                 return completions;
             }
         } else if (command.getName().equalsIgnoreCase("setwarp")) {
-            if (args.length == 1 || args.length == 2 || args.length == 3) {
+            if (args.length == 1) {
+                List<String> completions = new ArrayList<>();
+                completions.add("~");
+                completions.add("target");
+                return completions;
+            } else if (args.length == 2 || args.length == 3) {
                 List<String> completions = new ArrayList<>();
                 completions.add("~");
                 return completions;

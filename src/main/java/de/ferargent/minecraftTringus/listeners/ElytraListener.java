@@ -1,15 +1,12 @@
 package de.ferargent.minecraftTringus.listeners;
 
 import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
-import de.ferargent.minecraftTringus.Main;
 import org.bukkit.*;
-import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +15,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ElytraListener extends BukkitRunnable implements Listener {
@@ -70,7 +66,7 @@ public class ElytraListener extends BukkitRunnable implements Listener {
         world.getPlayers().forEach(player -> {
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE && player.getInventory().getChestplate() != null)
                 return;
-            if (isInSpawnRadius(player) && !hasElytra.contains(player) && boostEnabled) {
+            if (isInSpawnRadius(player) && !hasElytra.contains(player) && boostEnabled && player.getInventory().getItem(8) == null) {
                 player.getInventory().setItem(8, customBoost());
             }
             if (player.getInventory().contains(customElytra()) && !hasElytra.contains(player)) {
@@ -100,7 +96,7 @@ public class ElytraListener extends BukkitRunnable implements Listener {
     @EventHandler
     private void onBoost(PlayerElytraBoostEvent event) {
         Player player = event.getPlayer();
-        if (boostEnabled && hasElytra.contains(player)) {
+        if (boostEnabled && hasElytra.contains(player) && player.getInventory().getItem(8) == null) {
             player.getInventory().setItem(8, customBoost());
         }
     }

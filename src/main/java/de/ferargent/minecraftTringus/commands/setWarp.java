@@ -13,30 +13,38 @@ import org.jetbrains.annotations.NotNull;
 public class setWarp implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         String xStr = args[0];
-        String yStr = args[1];
-        String zStr = args[2];
 
         Player player = (Player) commandSender;
 
         double x, y, z;
 
-        if (xStr.equals("~")) {
-            x = player.getLocation().getX();
+        if (xStr.equals("target")) {
+            x = player.getTargetBlock(null, 100).getX();
+            y = player.getTargetBlock(null, 100).getY();
+            z = player.getTargetBlock(null, 100).getZ();
         } else {
-            x = parseCoordinate(xStr, player.getLocation().getX(), player);
+            String yStr = args[1];
+            String zStr = args[2];
+            if (xStr.equals("~")) {
+                x = player.getLocation().getX();
+            } else {
+                x = parseCoordinate(xStr, player.getLocation().getX(), player);
+            }
+
+            if (yStr.equals("~")) {
+                y = player.getLocation().getY();
+            } else {
+                y = parseCoordinate(yStr, player.getLocation().getY(), player);
+            }
+
+            if (zStr.equals("~")) {
+                z = player.getLocation().getZ();
+            } else {
+                z = parseCoordinate(zStr, player.getLocation().getZ(), player);
+            }
         }
 
-        if (yStr.equals("~")) {
-            y = player.getLocation().getY();
-        } else {
-            y = parseCoordinate(yStr, player.getLocation().getY(), player);
-        }
 
-        if (zStr.equals("~")) {
-            z = player.getLocation().getZ();
-        } else {
-            z = parseCoordinate(zStr, player.getLocation().getZ(), player);
-        }
         commandSender.sendMessage("§bWarp set to " + x + " " + y + " " + z + "!");
         PersistentDataContainer data = commandSender.getServer().getWorld("world").getPersistentDataContainer();
         data.set(new NamespacedKey(Main.getPlugin(), "warpPosition"), PersistentDataType.STRING, x + " " + y + " " + z);

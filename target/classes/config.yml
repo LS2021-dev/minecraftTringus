@@ -4,3 +4,5 @@ spawnProtectionEnabled: true
 warpProtectionEnabled: true
 warpProtectionRadius: 12
 warpTPRadius: 2
+warpGriefProtectionEnabled: true
+warpGriefProtectionRadius: 50
