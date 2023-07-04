@@ -2,7 +2,7 @@ spawnRadius: 12
 boostEnabled: true
 spawnProtectionEnabled: true
 warpProtectionEnabled: true
-warpProtectionRadius: 12
+warpProtectionRadius: 8
 warpTPRadius: 2
 warpGriefProtectionEnabled: true
 warpGriefProtectionRadius: 50

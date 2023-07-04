@@ -85,7 +85,7 @@ public class WarpListener extends BukkitRunnable implements Listener {
                     }, 50);
                 }
                 if (warpProtectionEnabled) {
-                    if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+                    if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || player.isOp()) return;
                     if (player.getLocation().distance(warpPostion) < warpProtectionRadius) {
                         player.setGameMode(GameMode.ADVENTURE);
                         player.addScoreboardTag("warp");
