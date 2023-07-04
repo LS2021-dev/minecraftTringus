@@ -75,14 +75,16 @@ public class WarpListener extends BukkitRunnable implements Listener {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         player.removeScoreboardTag("warp");
                         Location location = player.getWorld().getSpawnLocation();
+                        location.setX(location.getX() - 0.5);
                         location.setY(location.getY() + 0.5);
+                        location.setZ(location.getZ() + 0.5);
                         location.setDirection(player.getLocation().getDirection());
                         player.teleport(location);
                         player.getWorld().playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                         player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, location, 60, 0.2, 0.5, 0.2, 0.1, null, true);
                         player.sendMessage("§bTeleported to spawn!");
                         hasEffect.remove(player);
-                    }, 50);
+                    }, 30);
                 }
                 if (warpProtectionEnabled) {
                     if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || player.isOp()) return;

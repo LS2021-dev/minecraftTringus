@@ -66,11 +66,11 @@ public class ElytraListener extends BukkitRunnable implements Listener {
         world.getPlayers().forEach(player -> {
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE && player.getInventory().getChestplate() != null)
                 return;
+            if ((player.getInventory().contains(customElytra()) || player.getInventory().contains(customBoost())) && !hasElytra.contains(player)) {
+                hasElytra.add(player);
+            }
             if (isInSpawnRadius(player) && !hasElytra.contains(player) && boostEnabled && player.getInventory().getItem(8) == null) {
                 player.getInventory().setItem(8, customBoost());
-            }
-            if (player.getInventory().contains(customElytra()) && !hasElytra.contains(player)) {
-                hasElytra.add(player);
             }
             if (isInSpawnRadius(player) && !hasElytra.contains(player) && player.getInventory().getChestplate() == null) {
                 if (player.getAdvancementProgress(Bukkit.getAdvancement(NamespacedKey.fromString("end/elytra"))).isDone()) {
@@ -85,7 +85,7 @@ public class ElytraListener extends BukkitRunnable implements Listener {
             }
             if (hasElytra.contains(player) && player.isOnGround() && !isInSpawnRadius(player)) {
                 player.getInventory().setChestplate(null);
-                player.getInventory().setItem(8, new ItemStack(Material.AIR));
+                player.getInventory().removeItem(customBoost());
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     hasElytra.remove(player);
                 }, 5);
