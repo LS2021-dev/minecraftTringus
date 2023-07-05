@@ -1,5 +1,6 @@
 package de.ferargent.minecraftTringus.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -13,7 +14,7 @@ public class spawn implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         Player player = (Player) commandSender;
-        Location location = player.getWorld().getSpawnLocation();
+        Location location = Bukkit.getWorld("world").getSpawnLocation();
         if (location.getX() < 0)
             location.setX(location.getX() - 0.5);
         else
@@ -24,6 +25,7 @@ public class spawn implements CommandExecutor {
         else
             location.setZ(location.getZ() - 0.5);
         location.setDirection(player.getLocation().getDirection());
+        location.setWorld(Bukkit.getWorld("world"));
         player.teleport(location);
         player.getWorld().playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
         player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, location, 60, 0.2, 0.5, 0.2, 0.1, null, true);
