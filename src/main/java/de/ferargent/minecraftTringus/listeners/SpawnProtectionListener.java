@@ -3,7 +3,11 @@ package de.ferargent.minecraftTringus.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -46,5 +50,17 @@ public class SpawnProtectionListener extends BukkitRunnable implements Listener 
                 }
             });
         }
+    }
+
+    @EventHandler
+    private void onDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() == EntityType.PLAYER && event.getDamager().getType() == EntityType.PLAYER && event.getEntity().getLocation().distance(world.getSpawnLocation()) <= spawnRadius && !event.getDamager().isOp())
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onHunger(FoodLevelChangeEvent event) {
+        if (event.getEntityType() == EntityType.PLAYER && event.getEntity().getLocation().distance(world.getSpawnLocation()) <= spawnRadius)
+            event.setCancelled(true);
     }
 }

@@ -113,18 +113,6 @@ public class ElytraListener extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    private void onDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getEntityType() == EntityType.PLAYER && event.getDamager().getType() == EntityType.PLAYER && hasElytra.contains(event.getEntity()) && !event.getDamager().isOp())
-            event.setCancelled(true);
-    }
-
-    @EventHandler
-    private void onHunger(FoodLevelChangeEvent event) {
-        if (event.getEntityType() == EntityType.PLAYER && hasElytra.contains(event.getEntity()))
-            event.setCancelled(true);
-    }
-
-    @EventHandler
     private void onPlayerMove(PlayerMoveEvent moveEvent) {
         Player player = moveEvent.getPlayer();
         if (!hasElytra.contains(player) || !player.isGliding()) return;
