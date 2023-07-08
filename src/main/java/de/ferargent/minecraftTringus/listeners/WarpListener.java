@@ -107,7 +107,6 @@ public class WarpListener extends BukkitRunnable implements Listener {
 
     @EventHandler
     private void onBlockBreak(EntityExplodeEvent event) {
-        Bukkit.getLogger().info("Event called");
         if (!warpGriefProtectionEnabled || warpPosition() == null) return;
         if (event.getEntity().getLocation().distance(warpPosition()) < warpGriefProtectionRadius) {
             Bukkit.getLogger().info("Event cancelled");
