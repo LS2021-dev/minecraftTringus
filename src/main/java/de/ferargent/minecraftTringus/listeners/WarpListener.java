@@ -107,15 +107,14 @@ public class WarpListener extends BukkitRunnable implements Listener {
 
     @EventHandler
     private void onBlockBreak(EntityExplodeEvent event) {
-        if (!warpGriefProtectionEnabled || warpPosition() == null) return;
-        if (event.getEntity().getLocation().distance(warpPosition()) < warpGriefProtectionRadius) {
-            Bukkit.getLogger().info("Event cancelled");
+        if (!warpGriefProtectionEnabled || warpPosition() == null || !event.getEntity().getWorld().equals(world)) return;
+        if (warpPosition().distance(event.getEntity().getLocation()) <= warpGriefProtectionRadius) {
             event.setCancelled(true);
         }
     }
 
     private boolean isInWarpTPRadius(Player player) {
-        if (!player.getWorld().equals(world)) return false;
+        if (!player.getWorld().equals(world) || warpPosition() == null) return false;
         return warpPosition().distance(player.getLocation()) <= warpTPRadius;
     }
 
