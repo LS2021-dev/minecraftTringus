@@ -67,9 +67,8 @@ public class WarpListener extends BukkitRunnable implements Listener {
     @Override
     public void run() {
         if (!(warpPosition() == null)) {
-            Location warpPostion = warpPosition();
             world.getPlayers().forEach(player -> {
-                if (player.getLocation().distance(warpPostion) < warpTPRadius && !hasEffect.contains(player)) {
+                if (isInWarpTPRadius(player) && !hasEffect.contains(player)) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 60, 3));
                     hasEffect.add(player);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -94,7 +93,7 @@ public class WarpListener extends BukkitRunnable implements Listener {
                 }
                 if (warpProtectionEnabled) {
                     if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || player.isOp()) return;
-                    if (player.getLocation().distance(warpPostion) < warpProtectionRadius) {
+                    if (isInWarpProtectionRadius(player)) {
                         player.setGameMode(GameMode.ADVENTURE);
                         player.addScoreboardTag("warp");
                     } else if (player.getScoreboardTags().contains("warp") && !player.getScoreboardTags().contains("spawn")) {
@@ -114,5 +113,15 @@ public class WarpListener extends BukkitRunnable implements Listener {
             Bukkit.getLogger().info("Event cancelled");
             event.setCancelled(true);
         }
+    }
+
+    private boolean isInWarpTPRadius(Player player) {
+        if (!player.getWorld().equals(world)) return false;
+        return warpPosition().distance(player.getLocation()) <= warpTPRadius;
+    }
+
+    private boolean isInWarpProtectionRadius(Player player) {
+        if (!player.getWorld().equals(world) || warpPosition() == null) return false;
+        return warpPosition().distance(player.getLocation()) <= warpProtectionRadius;
     }
 }

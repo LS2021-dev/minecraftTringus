@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -54,13 +55,18 @@ public class SpawnProtectionListener extends BukkitRunnable implements Listener 
 
     @EventHandler
     private void onDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getEntityType() == EntityType.PLAYER && event.getDamager().getType() == EntityType.PLAYER && event.getEntity().getLocation().distance(world.getSpawnLocation()) <= spawnRadius && !event.getDamager().isOp())
+        if (event.getEntityType() == EntityType.PLAYER && event.getDamager().getType() == EntityType.PLAYER && isInSpawnRadius((Player) event.getEntity()) && !event.getDamager().isOp())
             event.setCancelled(true);
     }
 
     @EventHandler
     private void onHunger(FoodLevelChangeEvent event) {
-        if (event.getEntityType() == EntityType.PLAYER && event.getEntity().getLocation().distance(world.getSpawnLocation()) <= spawnRadius)
+        if (event.getEntityType() == EntityType.PLAYER && isInSpawnRadius((Player) event.getEntity()))
             event.setCancelled(true);
+    }
+
+    private boolean isInSpawnRadius(Player player) {
+        if (!player.getWorld().equals(world)) return false;
+        return world.getSpawnLocation().distance(player.getLocation()) <= spawnRadius;
     }
 }
