@@ -75,9 +75,15 @@ public class ElytraListener extends BukkitRunnable implements Listener {
             if ((isInSpawnRadius(player) && !hasElytra.contains(player) && boostEnabled && player.getInventory().getItem(8) == null) || (hasElytra.contains(player) && player.isGliding() && boostEnabled && player.getInventory().getItem(8) == null)) {
                 player.getInventory().setItem(8, customBoost());
             }
-            if (isInSpawnRadius(player) && !hasElytra.contains(player) && player.getInventory().getChestplate() == null) {
-                player.getInventory().setChestplate(customElytra());
-                hasElytra.add(player);
+            if (isInSpawnRadius(player) && !hasElytra.contains(player)) {
+                if (player.getInventory().getChestplate() == null) {
+                    player.getInventory().setChestplate(customElytra());
+                    hasElytra.add(player);
+                } else {
+                    ItemStack chestplate = player.getInventory().getChestplate();
+                    player.getInventory().setChestplate(customElytra());
+                    player.getInventory().addItem(chestplate);
+                }
             }
             if (hasElytra.contains(player) && player.isOnGround() && !isInSpawnRadius(player)) {
                 player.getInventory().setChestplate(null);
